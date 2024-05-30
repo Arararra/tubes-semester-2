@@ -107,25 +107,25 @@ void freeTree(Data node) {
 }
 
 int main(int argc, char const *argv[]) {
-    Data root = createNode(1, "Informatika");
+  Data root = createNode(1, "Informatika");
 
-    insertNode(root, 2, "Aljabar Linear");
-    insertNode(root, 3, "Pemrograman Lanjut");
-    insertNode(root, 4, "Basis Data");
-    insertNode(root->childs[0], 5, "Rama");
-    insertNode(root->childs[0], 6, "Bayu");
-    insertNode(root->childs[1], 7, "Bambang");
+  insertNode(root, 2, "Aljabar Linear");
+  insertNode(root, 3, "Pemrograman Lanjut");
+  insertNode(root, 4, "Basis Data");
+  insertNode(root->childs[0], 5, "Rama");
+  insertNode(root->childs[0], 6, "Bayu");
+  insertNode(root->childs[1], 7, "Bambang");
 
-    printf("Tree Structure:\n");
-    printTree(root, 0);
+  printf("Tree Structure:\n");
+  printTree(root, 0);
 
-    printf("\nInorder Traversal:\n");
-    inOrderTraversal(root, 0);
+  printf("\nInorder Traversal:\n");
+  inOrderTraversal(root, 0);
 
-    printf("\nPostorder Traversal:\n");
-    postOrderTraversal(root, 0);
+  printf("\nPostorder Traversal:\n");
+  postOrderTraversal(root, 0);
 
-    freeTree(root);
+  freeTree(root);
 
-    return 0;
+  return 0;
 }
