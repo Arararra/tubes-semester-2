@@ -69,7 +69,7 @@ void inOrderTraversal(Data node, int level) {
   }
 
   printf("%d %s\n", node->id, node->nama);
-  
+
   if (node->childs) {
     for (int i = 1; node->childs[i] != NULL; i++) {
       inOrderTraversal(node->childs[i], level + 1);
@@ -89,7 +89,7 @@ void postOrderTraversal(Data node, int level) {
   for (int i = 0; i < level; i++) {
     printf("  ");
   }
-  
+
   printf("%d %s\n", node->id, node->nama);
 }
 
@@ -104,6 +104,72 @@ void freeTree(Data node) {
   }
 
   free(node);
+}
+
+Data searchByName(Data node, char *name) {
+  if (node == NULL) return NULL;
+
+  if (strcmp(node->nama, name) == 0) {
+    return node;
+  }
+
+  if (node->childs) {
+    for (int i = 0; node->childs[i] != NULL; i++) {
+      Data result = searchByName(node->childs[i], name);
+      if (result != NULL) {
+        return result;
+      }
+    }
+  }
+
+  return NULL;
+}
+
+void printNodeInfo(Data node) {
+  if (node == NULL) {
+    printf("Node tidak ditemukan.\n");
+    return;
+  }
+
+  printf("Node ditemukan:\n");
+  printf("ID: %d\n", node->id);
+  printf("Nama: %s\n", node->nama);
+
+  // Print parent
+  if (node->parent) {
+    printf("Parent: %s\n", node->parent->nama);
+  } else {
+    printf("Parent: NULL\n");
+  }
+
+  // Print siblings
+  printf("Siblings: ");
+  if (node->parent && node->parent->childs) {
+    int hasSibling = 0;
+    for (int i = 0; node->parent->childs[i] != NULL; i++) {
+      if (node->parent->childs[i] != node) {
+        printf("%s ", node->parent->childs[i]->nama);
+        hasSibling = 1;
+      }
+    }
+    if (!hasSibling) {
+      printf("None");
+    }
+  } else {
+    printf("None");
+  }
+  printf("\n");
+
+  // Print children
+  printf("Children: ");
+  if (node->childs) {
+    for (int i = 0; node->childs[i] != NULL; i++) {
+      printf("%s ", node->childs[i]->nama);
+    }
+  } else {
+    printf("None");
+  }
+  printf("\n");
 }
 
 int main(int argc, char const *argv[]) {
@@ -124,6 +190,13 @@ int main(int argc, char const *argv[]) {
 
   printf("\nPostorder Traversal:\n");
   postOrderTraversal(root, 0);
+
+  char nameToSearch[50];
+  printf("\nMasukkan nama yang ingin dicari: ");
+  scanf("%s", nameToSearch);
+
+  Data foundNode = searchByName(root, nameToSearch);
+  printNodeInfo(foundNode);
 
   freeTree(root);
 
