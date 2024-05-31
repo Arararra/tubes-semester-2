@@ -83,26 +83,6 @@ void printPostorder(Data node, int level) {
   printf("%d %s\n", node->id, node->nama);
 }
 
-void printTree(Data *roots, int numRoots, int jenis) {
-  switch (jenis) {
-    case 1:
-      for (int i = 0; i < numRoots; i++) {
-        printPreorder(roots[i], 0);
-      }
-      break;
-    case 2:
-      for (int i = 0; i < numRoots; i++) {
-        printInorder(roots[i], 0);
-      }
-      break;
-    case 3:
-      for (int i = 0; i < numRoots; i++) {
-        printPostorder(roots[i], 0);
-      }
-      break;
-  }
-}
-
 int main(int argc, char const *argv[]) {
   int pilihan = -1, numRoots = 0, jenisPrint = 1;
   Data *roots = (Data *)malloc(1 * sizeof(Data));
@@ -111,7 +91,18 @@ int main(int argc, char const *argv[]) {
   while (1) {
     system("cls");
     if (pilihan == 404) printf("Pilihan tidak tersedia\n");
-    if (roots[0] != NULL) printTree(roots, numRoots, jenisPrint);
+
+    if (roots[0] != NULL) {
+      for (int i = 0; i < numRoots; i++) {
+        if (jenisPrint == 1) {
+          printPreorder(roots[i], 0);
+        } else if (jenisPrint == 2) {
+          printInorder(roots[i], 0);
+        } else {
+          printPostorder(roots[i], 0);
+        }
+      }
+    }
 
     printf("\n1. Create root\n2. Insert child\n3. Cari Mahasiswa\n4. Traverse preorder");
     printf("\n5. Traverse inorder\n6. Traverse postorder\n0. Keluar\nPilihan: ");
