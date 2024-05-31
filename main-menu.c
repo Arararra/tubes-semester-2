@@ -90,8 +90,6 @@ int main(int argc, char const *argv[]) {
 
   while (1) {
     system("cls");
-    if (pilihan == 404) printf("Pilihan tidak tersedia\n");
-
     if (roots[0] != NULL) {
       for (int i = 0; i < numRoots; i++) {
         if (jenisPrint == 1) {
@@ -101,10 +99,12 @@ int main(int argc, char const *argv[]) {
         } else {
           printPostorder(roots[i], 0);
         }
+        printf("\n");
       }
+      printf("=========================\n\n");
     }
 
-    printf("\n1. Create root\n2. Insert child\n3. Cari Mahasiswa\n4. Traverse preorder");
+    printf("1. Create root\n2. Insert child\n3. Cari Mahasiswa\n4. Traverse preorder");
     printf("\n5. Traverse inorder\n6. Traverse postorder\n0. Keluar\nPilihan: ");
     scanf("%d", &pilihan);
 
@@ -137,7 +137,8 @@ int main(int argc, char const *argv[]) {
         exit(0);
         break;
       default:
-        pilihan = 404;
+        printf("Pilihan tidak tersedia\n");
+        system("pause");
         break;
     }
   }
