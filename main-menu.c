@@ -31,20 +31,87 @@ void createRoot(Data **roots, int *numRoots, int id, char *nama) {
   (*roots)[(*numRoots)] = NULL;
 }
 
+void printPreorder(Data node, int level) {
+  if (node == NULL) return;
+
+  for (int i = 0; i < level; i++) {
+    printf("  ");
+  }
+
+  printf("%d %s\n", node->id, node->nama);
+
+  if (node->childs) {
+    for (int i = 0; node->childs[i] != NULL; i++) {
+      printPreorder(node->childs[i], level + 1);
+    }
+  }
+}
+
+void printInorder(Data node, int level) {
+  if (node == NULL) return;
+
+  if (node->childs && node->childs[0]) {
+    printInorder(node->childs[0], level + 1);
+  }
+
+  for (int i = 0; i < level; i++) {
+    printf("  ");
+  }
+
+  printf("%d %s\n", node->id, node->nama);
+  
+  if (node->childs) {
+    for (int i = 1; node->childs[i] != NULL; i++) {
+      printInorder(node->childs[i], level + 1);
+    }
+  }
+}
+
+void printPostorder(Data node, int level) {
+  if (node == NULL) return;
+
+  if (node->childs) {
+    for (int i = 0; node->childs[i] != NULL; i++) {
+      printPostorder(node->childs[i], level + 1);
+    }
+  }
+
+  for (int i = 0; i < level; i++) {
+    printf("  ");
+  }
+  
+  printf("%d %s\n", node->id, node->nama);
+}
+
+void printTree(Data *roots, int numRoots, int jenis) {
+  switch (jenis) {
+    case 1:
+      for (int i = 0; i < numRoots; i++) {
+        printPreorder(roots[i], 0);
+      }
+      break;
+    case 2:
+      for (int i = 0; i < numRoots; i++) {
+        printInorder(roots[i], 0);
+      }
+      break;
+    case 3:
+      for (int i = 0; i < numRoots; i++) {
+        printPostorder(roots[i], 0);
+      }
+      break;
+  }
+}
+
 int main(int argc, char const *argv[]) {
-  int pilihan = -1, numRoots = 0;
-  Data *roots = (Data *)malloc((numRoots + 1) * sizeof(Data));
-  roots[numRoots] = NULL;
+  int pilihan = -1, numRoots = 0, jenisPrint = 1;
+  Data *roots = (Data *)malloc(1 * sizeof(Data));
+  roots[0] = NULL;
 
   while (1) {
     system("cls");
     if (pilihan == 404) printf("Pilihan tidak tersedia\n");
-
-    if (roots[0] != NULL) {
-      for (int i = 0; i < numRoots; i++) {
-        printf("%d %s\n", roots[i]->id, roots[i]->nama);
-      }
-    }
+    if (roots[0] != NULL) printTree(roots, numRoots, jenisPrint);
 
     printf("\n1. Create root\n2. Insert child\n3. Cari Mahasiswa\n4. Traverse preorder");
     printf("\n5. Traverse inorder\n6. Traverse postorder\n0. Keluar\nPilihan: ");
@@ -67,10 +134,13 @@ int main(int argc, char const *argv[]) {
       case 3:
         break;
       case 4:
+        jenisPrint = 1;
         break;
       case 5:
+        jenisPrint = 2;
         break;
       case 6:
+        jenisPrint = 3;
         break;
       case 0:
         exit(0);
