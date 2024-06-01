@@ -192,7 +192,7 @@ int main(int argc, char const *argv[]) {
   postOrderTraversal(root, 0);
 
   char nameToSearch[50];
-  printf("\nMasukkan nama yang ingin dicari: ");
+  printf("\nMasukkan nama mahasiswa yang ingin dicari: ");
   scanf("%s", nameToSearch);
 
   Data foundNode = searchByName(root, nameToSearch);
