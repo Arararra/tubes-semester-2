@@ -22,6 +22,21 @@ Data createNode(int id, char *nama) {
   return node;
 }
 
+Data findNodeById(Data node, int id) {
+  if (node == NULL) return NULL;
+
+  if (node->id == id) return node;
+
+  if (node->childs) {
+    for (int i = 0; node->childs[i] != NULL; i++) {
+      Data found = findNodeById(node->childs[i], id);
+      if (found != NULL) return found;
+    }
+  }
+
+  return NULL;
+}
+
 void createRoot(Data **roots, int *numRoots) {
   int id;
   printf("Masukkan id prodi: ");
@@ -29,7 +44,7 @@ void createRoot(Data **roots, int *numRoots) {
 
   int found = 0;
   for (int i = 0; i < (*numRoots); i++) {
-    if ((*roots)[i]->id == id) {
+    if (findNodeById((*roots)[i], id) != NULL) {
       found = 1;
       break;
     }
@@ -50,6 +65,58 @@ void createRoot(Data **roots, int *numRoots) {
 
   (*roots)[(*numRoots) - 1] = createNode(id, nama);
   (*roots)[(*numRoots)] = NULL;
+}
+
+void insertChild(Data *roots, int numRoots) {
+  int parentId, childId;
+  printf("Masukkan id parent: ");
+  scanf("%d", &parentId);
+
+  Data parent = NULL;
+  for (int i = 0; i < numRoots; i++) {
+    parent = findNodeById(roots[i], parentId);
+    if (parent != NULL) break;
+  }
+
+  if (parent == NULL) {
+    printf("ID parent tidak ditemukan\n");
+    system("pause");
+    return;
+  }
+
+  printf("Masukkan id child: ");
+  scanf("%d", &childId);
+
+  int found = 0;
+  Data *temp = parent->childs;
+  while (temp && *temp) {
+    if ((*temp)->id == childId) {
+      found = 1;
+      break;
+    }
+    temp++;
+  }
+  if (found == 1) {
+    printf("ID child sudah ada\n");
+    system("pause");
+    return;
+  }
+  
+  char nama[50];
+  printf("Masukkan nama child: ");
+  scanf(" %[^\n]s", &nama);
+
+  Data child = createNode(childId, nama);
+  child->parent = parent;
+
+  int numChilds = 0;
+  if (parent->childs) {
+    while (parent->childs[numChilds] != NULL) numChilds++;
+  }
+
+  parent->childs = (Data *)realloc(parent->childs, (numChilds + 2) * sizeof(Data));
+  parent->childs[numChilds] = child;
+  parent->childs[numChilds + 1] = NULL;
 }
 
 void printPreorder(Data node, int level) {
@@ -134,8 +201,10 @@ int main(int argc, char const *argv[]) {
         createRoot(&roots, &numRoots);
         break;
       case 2:
+        insertChild(roots, numRoots);
         break;
       case 3:
+        // Coming soon
         break;
       case 4:
         jenisPrint = 1;
