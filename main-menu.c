@@ -24,8 +24,6 @@ Data createNode(int id, char *nama) {
 
 void createRoot(Data **roots, int *numRoots) {
   int id;
-  char nama[50];
-
   printf("Masukkan id prodi: ");
   scanf("%d", &id);
 
@@ -42,6 +40,7 @@ void createRoot(Data **roots, int *numRoots) {
     return;
   }
   
+  char nama[50];
   printf("Masukkan nama prodi: ");
   scanf(" %[^\n]s", &nama);
 
