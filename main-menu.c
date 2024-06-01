@@ -22,7 +22,29 @@ Data createNode(int id, char *nama) {
   return node;
 }
 
-void createRoot(Data **roots, int *numRoots, int id, char *nama) {
+void createRoot(Data **roots, int *numRoots) {
+  int id;
+  char nama[50];
+
+  printf("Masukkan id prodi: ");
+  scanf("%d", &id);
+
+  int found = 0;
+  for (int i = 0; i < (*numRoots); i++) {
+    if ((*roots)[i]->id == id) {
+      found = 1;
+      break;
+    }
+  }
+  if (found == 1) {
+    printf("ID root sudah ada\n");
+    system("pause");
+    return;
+  }
+  
+  printf("Masukkan nama prodi: ");
+  scanf(" %[^\n]s", &nama);
+
   (*numRoots)++;
   
   *roots = (Data *)realloc(*roots, ((*numRoots) + 1) * sizeof(Data));
@@ -110,15 +132,7 @@ int main(int argc, char const *argv[]) {
 
     switch (pilihan) {
       case 1:
-        int id;
-        char nama[50];
-
-        printf("Masukkan id prodi: ");
-        scanf("%d", &id);
-        printf("Masukkan nama prodi: ");
-        scanf(" %[^\n]s", &nama);
-
-        createRoot(&roots, &numRoots, id, nama);
+        createRoot(&roots, &numRoots);
         break;
       case 2:
         break;
