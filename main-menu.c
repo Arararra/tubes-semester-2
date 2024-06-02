@@ -13,18 +13,15 @@ struct data {
 
 Data createNode(int id, char *nama) {
   Data node = (Data)malloc(sizeof(struct data));
-
   node->id = id;
   strcpy(node->nama, nama);
   node->parent = node->sibling = NULL;
   node->childs = NULL;
-
   return node;
 }
 
 Data findNodeById(Data node, int id) {
   if (node == NULL) return NULL;
-
   if (node->id == id) return node;
 
   if (node->childs) {
@@ -33,7 +30,19 @@ Data findNodeById(Data node, int id) {
       if (found != NULL) return found;
     }
   }
+  return NULL;
+}
 
+Data findNodeByName(Data node, char *nama) {
+  if (node == NULL) return NULL;
+  if (strcmp(node->nama, nama) == 0) return node;
+
+  if (node->childs) {
+    for (int i = 0; node->childs[i] != NULL; i++) {
+      Data found = findNodeByName(node->childs[i], nama);
+      if (found != NULL) return found;
+    }
+  }
   return NULL;
 }
 
@@ -42,27 +51,12 @@ void createRoot(Data **roots, int *numRoots) {
   printf("Masukkan id prodi: ");
   scanf("%d", &id);
 
-  int found = 0;
-  for (int i = 0; i < (*numRoots); i++) {
-    if (findNodeById((*roots)[i], id) != NULL) {
-      found = 1;
-      break;
-    }
-  }
-  if (found == 1) {
-    printf("ID root sudah ada\n");
-    system("pause");
-    return;
-  }
-  
   char nama[50];
   printf("Masukkan nama prodi: ");
   scanf(" %[^\n]s", &nama);
 
   (*numRoots)++;
-  
   *roots = (Data *)realloc(*roots, ((*numRoots) + 1) * sizeof(Data));
-
   (*roots)[(*numRoots) - 1] = createNode(id, nama);
   (*roots)[(*numRoots)] = NULL;
 }
@@ -101,7 +95,7 @@ void insertChild(Data *roots, int numRoots) {
     system("pause");
     return;
   }
-  
+
   char nama[50];
   printf("Masukkan nama child: ");
   scanf(" %[^\n]s", &nama);
@@ -115,6 +109,9 @@ void insertChild(Data *roots, int numRoots) {
   }
 
   parent->childs = (Data *)realloc(parent->childs, (numChilds + 2) * sizeof(Data));
+  if (numChilds > 0) {
+    parent->childs[numChilds - 1]->sibling = child;
+  }
   parent->childs[numChilds] = child;
   parent->childs[numChilds + 1] = NULL;
 }
@@ -125,7 +122,6 @@ void printPreorder(Data node, int level) {
   for (int i = 0; i < level; i++) {
     printf("  ");
   }
-
   printf("%d %s\n", node->id, node->nama);
 
   if (node->childs) {
@@ -145,9 +141,8 @@ void printInorder(Data node, int level) {
   for (int i = 0; i < level; i++) {
     printf("  ");
   }
-
   printf("%d %s\n", node->id, node->nama);
-  
+
   if (node->childs) {
     for (int i = 1; node->childs[i] != NULL; i++) {
       printInorder(node->childs[i], level + 1);
@@ -167,8 +162,48 @@ void printPostorder(Data node, int level) {
   for (int i = 0; i < level; i++) {
     printf("  ");
   }
-  
   printf("%d %s\n", node->id, node->nama);
+}
+
+void searchNode(Data *roots, int numRoots) {
+  char nama[50];
+  printf("Masukkan nama node: ");
+  scanf(" %[^\n]s", &nama);
+
+  Data node = NULL;
+  for (int i = 0; i < numRoots; i++) {
+    node = findNodeByName(roots[i], nama);
+    if (node != NULL) break;
+  }
+
+  if (node == NULL) {
+    printf("Node dengan nama %s tidak ditemukan\n", nama);
+  } else {
+    printf("ID: %d\n", node->id);
+    printf("Nama: %s\n", node->nama);
+    if (node->parent != NULL) {
+      printf("Parent: %s\n", node->parent->nama);
+    } else {
+      printf("Parent: None\n");
+    }
+
+    if (node->sibling != NULL) {
+      printf("Sibling Nama: %s\n", node->sibling->nama);
+    } else {
+      printf("Sibling: None\n");
+    }
+
+    if (node->childs != NULL) {
+      printf("Childs:\n");
+      for (int i = 0; node->childs[i] != NULL; i++) {
+        printf("  - ID: %d, Nama: %s\n", node->childs[i]->id, node->childs[i]->nama);
+      }
+    } else {
+      printf("Childs: None\n");
+    }
+  }
+
+  system("pause");
 }
 
 int main(int argc, char const *argv[]) {
@@ -192,7 +227,7 @@ int main(int argc, char const *argv[]) {
       printf("=========================\n\n");
     }
 
-    printf("1. Create root\n2. Insert child\n3. Cari Mahasiswa\n4. Traverse preorder");
+    printf("1. Create root\n2. Insert child\n3. Cari node\n4. Traverse preorder");
     printf("\n5. Traverse inorder\n6. Traverse postorder\n0. Keluar\nPilihan: ");
     scanf("%d", &pilihan);
 
@@ -204,7 +239,7 @@ int main(int argc, char const *argv[]) {
         insertChild(roots, numRoots);
         break;
       case 3:
-        // Coming soon
+        searchNode(roots, numRoots);
         break;
       case 4:
         jenisPrint = 1;
