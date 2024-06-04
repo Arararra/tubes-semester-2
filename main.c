@@ -41,7 +41,7 @@ void insertNode(Data parent, int id, char *nama) {
   }
 }
 
-void printTree(Data node, int level) {
+void preOrderTraversal(Data node, int level) {
   if (node == NULL) return;
 
   for (int i = 0; i < level; i++) {
@@ -52,7 +52,7 @@ void printTree(Data node, int level) {
 
   if (node->childs) {
     for (int i = 0; node->childs[i] != NULL; i++) {
-      printTree(node->childs[i], level + 1);
+      preOrderTraversal(node->childs[i], level + 1);
     }
   }
 }
@@ -135,14 +135,12 @@ void printNodeInfo(Data node) {
   printf("ID: %d\n", node->id);
   printf("Nama: %s\n", node->nama);
 
-  // Print parent
   if (node->parent) {
     printf("Parent: %s\n", node->parent->nama);
   } else {
     printf("Parent: NULL\n");
   }
 
-  // Print siblings
   printf("Siblings: ");
   if (node->parent && node->parent->childs) {
     int hasSibling = 0;
@@ -160,7 +158,6 @@ void printNodeInfo(Data node) {
   }
   printf("\n");
 
-  // Print children
   printf("Children: ");
   if (node->childs) {
     for (int i = 0; node->childs[i] != NULL; i++) {
@@ -180,10 +177,11 @@ int main(int argc, char const *argv[]) {
   insertNode(root, 4, "Basis Data");
   insertNode(root->childs[0], 5, "Rama");
   insertNode(root->childs[0], 6, "Bayu");
+  insertNode(root->childs[0], 8, "Ahmad");
   insertNode(root->childs[1], 7, "Bambang");
 
-  printf("Tree Structure:\n");
-  printTree(root, 0);
+  printf("Preorder Traversal:\n");
+  preOrderTraversal(root, 0);
 
   printf("\nInorder Traversal:\n");
   inOrderTraversal(root, 0);

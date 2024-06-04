@@ -187,11 +187,21 @@ void searchNode(Data *roots, int numRoots) {
       printf("Parent: None\n");
     }
 
-    if (node->sibling != NULL) {
-      printf("Sibling Nama: %s\n", node->sibling->nama);
+    printf("Siblings: ");
+    int siblingCount = 0;
+    if (node->parent != NULL && node->parent->childs != NULL) {
+      for (int i = 0; node->parent->childs[i] != NULL; i++) {
+        if (node->parent->childs[i] != node) {
+          if (siblingCount > 0) printf(", ");
+          printf("%s", node->parent->childs[i]->nama);
+          siblingCount++;
+        }
+      }
+      if (siblingCount == 0) printf("None");
     } else {
-      printf("Sibling: None\n");
+      printf("None");
     }
+    printf("\n");
 
     if (node->childs != NULL) {
       printf("Childs:\n");
