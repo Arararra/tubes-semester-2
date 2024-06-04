@@ -191,7 +191,7 @@ int main(int argc, char const *argv[]) {
 
   char nameToSearch[50];
   printf("\nMasukkan nama mahasiswa yang ingin dicari: ");
-  scanf("%s", nameToSearch);
+  scanf(" %[^\n]s", nameToSearch);
 
   Data foundNode = searchByName(root, nameToSearch);
   printNodeInfo(foundNode);
