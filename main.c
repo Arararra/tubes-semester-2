@@ -158,14 +158,32 @@ void printNodeInfo(Data node) {
 
 int main(int argc, char const *argv[]) {
   Data root = createNode(1, "Informatika");
+  preOrderTraversal(root, 0);
+  printf("\n");
 
   insertNode(root, 2, "Aljabar Linear");
+  preOrderTraversal(root, 0);
+  printf("\n");
+
   insertNode(root, 3, "Pemrograman Lanjut");
+  preOrderTraversal(root, 0);
+  printf("\n");
+
   insertNode(root, 4, "Basis Data");
+  preOrderTraversal(root, 0);
+  printf("\n");
+
   insertNode(root->childs[0], 5, "Rama");
+  preOrderTraversal(root, 0);
+  printf("\n");
+
   insertNode(root->childs[0], 6, "Bayu");
-  insertNode(root->childs[0], 8, "Ahmad");
+  preOrderTraversal(root, 0);
+  printf("\n");
+
   insertNode(root->childs[1], 7, "Bambang");
+  preOrderTraversal(root, 0);
+  printf("\n");
 
   printf("Preorder Traversal:\n");
   preOrderTraversal(root, 0);
