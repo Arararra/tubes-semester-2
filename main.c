@@ -194,11 +194,11 @@ int main(int argc, char const *argv[]) {
   printf("\nPostorder Traversal:\n");
   postOrderTraversal(root, 0);
 
-  char nameToSearch[50];
-  printf("\nMasukkan nama mahasiswa yang ingin dicari: ");
-  scanf(" %[^\n]s", nameToSearch);
+  char namaNode[50];
+  printf("\nMasukkan nama node yang ingin dicari: ");
+  scanf(" %[^\n]s", namaNode);
 
-  Data foundNode = searchByName(root, nameToSearch);
+  Data foundNode = searchByName(root, namaNode);
   printNodeInfo(foundNode);
 
   return 0;
