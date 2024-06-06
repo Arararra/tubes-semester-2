@@ -93,19 +93,6 @@ void postOrderTraversal(Data node, int level) {
   printf("%d %s\n", node->id, node->nama);
 }
 
-void freeTree(Data node) {
-  if (node == NULL) return;
-
-  if (node->childs) {
-    for (int i = 0; node->childs[i] != NULL; i++) {
-      freeTree(node->childs[i]);
-    }
-    free(node->childs);
-  }
-
-  free(node);
-}
-
 Data searchByName(Data node, char *name) {
   if (node == NULL) return NULL;
 
@@ -195,8 +182,6 @@ int main(int argc, char const *argv[]) {
 
   Data foundNode = searchByName(root, nameToSearch);
   printNodeInfo(foundNode);
-
-  freeTree(root);
 
   return 0;
 }
